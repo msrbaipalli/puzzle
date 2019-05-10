@@ -1,54 +1,24 @@
-<div class="mainContainer"> 
-    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row1)">
+<div class="mainContainer"
+*ngFor="let item of puzzleObject"> 
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, item.row)">
     <div class="example-box" 
-      *ngFor="let item of row1"
+      *ngFor="let item of item.row"
       cdkDrag
       class="example-box"
-      [ngClass]="item"></div>
-  </div>
-
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row2)">
-    <div class="example-box" 
-      *ngFor="let item of row2" 
-      cdkDrag
-      class="example-box"
-      [ngClass]="item"></div>
-  </div>
-
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row3)">
-    <div  
-      *ngFor="let item of row3"
-      cdkDrag
-      class="example-box"
-      [ngClass]="item"></div>
-  </div>
-
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row4)">
-    <div  
-      *ngFor="let item of row4"
-      cdkDrag
-      class="example-box"
-      [ngClass]="item"></div>
-  </div>
-
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row5)">
-    <div  
-      *ngFor="let item of row5"
-      cdkDrag
-      class="example-box"
-      [ngClass]="item"></div>
-  </div>
-
-  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event, row6)">
-    <div  
-      *ngFor="let item of row6"
-      cdkDrag
-      class="example-box"
-      [ngClass]="item"></div>
+      [ngStyle]="{'background': item}"></div>
   </div>
 </div>
 
 <button
-class="shuffleButton"
+class=""
 mat-stroked-button
 (click)="shuffleElements()">SHUFFLE</button>
+
+<button
+class=""
+mat-stroked-button
+(click)="addRow()">Add Row</button>
+<button
+class=""
+mat-stroked-button
+(click)="addColumn()">Add Column</button>

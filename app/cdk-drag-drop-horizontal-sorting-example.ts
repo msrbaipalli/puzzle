@@ -10,52 +10,16 @@ import {MatSnackBar} from '@angular/material'
   templateUrl: 'cdk-drag-drop-horizontal-sorting-example.html',
   styleUrls: ['cdk-drag-drop-horizontal-sorting-example.css'],
 })
-export class CdkDragDropHorizontalSortingExample {
-  row1 = [
-    'red',
-    'green',
-    'yellow',
-    'blue'
-  ];
-
-  row2 = [
-    'red',
-    'blue',
-    'green',
-    'yellow',
-  ];
-
-  row3 = [
-    'blue',
-    'red',
-    'green',
-    'yellow',
-  ];
-
-  row4 = [
-    'red',
-    'blue',
-    'yellow',
-    'green'
-  ];
-
-   row5 = [
-    'red',
-    'blue',
-    'yellow',
-    'green'
-  ];
-
-  row6 = [
-    'red',
-    'blue',
-    'yellow',
-    'green'
-  ];
+export class CdkDragDropHorizontalSortingExample implements OnInit {
+  puzzleObject = [];
 
   constructor(private snackBar: MatSnackBar) {}
 
-  $onInit() {
+  ngOnInit() {
+    this.addRow();
+    this.addRow();
+    this.addRow();
+
     this.shuffleElements();
   }
 
@@ -65,9 +29,7 @@ export class CdkDragDropHorizontalSortingExample {
   }
 
   checkForMatch() {
-    if (this.row1.every((item, index) => item === this.row2[index]) &&
-        this.row2.every((item, index) => item === this.row3[index]) && 
-        this.row1.every((item, index) => item === this.row3[index])) {
+    if (false) {
       this.snackBar.open('You made it!', '', {
         duration: 3000,
       });
@@ -75,19 +37,48 @@ export class CdkDragDropHorizontalSortingExample {
   }
 
   shuffleElements() {
-    this.row1 = this.shuffle(this.row1);
-    this.row2 = this.shuffle(this.row2);
-    this.row3 = this.shuffle(this.row3);
-    this.row4 = this.shuffle(this.row4);
-    this.row5 = this.shuffle(this.row5);
-    this.row6 = this.shuffle(this.row6);
+    this.puzzleObject.forEach(item => {
+      item.row = this.suffle(item.row);
+    });
   }
 
-  private shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+  addRow() {
+    this.puzzleObject.push(
+      {
+        row: [
+          this.getRandomColor(),
+          this.getRandomColor(),
+          this.getRandomColor(),
+          this.getRandomColor()
+        ]
+      }
+    );
+
+    this.shuffleElements();
+  }
+
+  addColumn() {
+    this.puzzleObject.forEach(item => {
+      item.row.push(this.getRandomColor());
+    });
+
+    this.shuffleElements();
+  }
+
+  private getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return a;
+    return color;
+}
+
+  private suffle(items) {
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    return items;
   }
 }
