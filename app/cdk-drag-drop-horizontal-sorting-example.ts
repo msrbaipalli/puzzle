@@ -11,16 +11,20 @@ import {MatSnackBar} from '@angular/material'
   styleUrls: ['cdk-drag-drop-horizontal-sorting-example.css'],
 })
 export class CdkDragDropHorizontalSortingExample implements OnInit {
-  puzzleObject = [];
+  puzzleObject: any[];
+  initialRow: any[];
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {
+    this.puzzleObject = [];
+    this.initialRow = [
+      this.getRandomColor(),
+      this.getRandomColor(),
+      this.getRandomColor()
+    ];
+  }
 
   ngOnInit() {
-    this.addRow();
-    this.addRow();
-    this.addRow();
-
-    this.shuffleElements();
+    this.resetElements();
   }
 
   drop(event: CdkDragDrop<string[]>, row) {
@@ -42,24 +46,42 @@ export class CdkDragDropHorizontalSortingExample implements OnInit {
     });
   }
 
+  resetElements() {
+    this.puzzleObject = [];
+
+    this.addRow();
+    this.addRow();
+    this.addRow();
+
+    this.shuffleElements();
+  }
+
   addRow() {
+    const row = this.initialRow;
+
     this.puzzleObject.push(
       {
-        row: [
-          this.getRandomColor(),
-          this.getRandomColor(),
-          this.getRandomColor(),
-          this.getRandomColor()
-        ]
+        row: Object.assign([], row)
       }
     );
+
+    const rows = this.puzzleObject.length;
+    const columns = this.puzzleObject[0].row.length;
+    const difference = Math.abs(rows - columns);
+
+    if (rows !== columns) {
+        for (let i = difference; difference != 0; i--) {
+            row.push(this.getRandomColor());
+        }
+    }
 
     this.shuffleElements();
   }
 
   addColumn() {
+    const initialColumn = this.getRandomColor();
     this.puzzleObject.forEach(item => {
-      item.row.push(this.getRandomColor());
+      item.row.push(initialColumn);
     });
 
     this.shuffleElements();
@@ -72,7 +94,7 @@ export class CdkDragDropHorizontalSortingExample implements OnInit {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-}
+  }
 
   private suffle(items) {
     for (let i = items.length - 1; i > 0; i--) {
